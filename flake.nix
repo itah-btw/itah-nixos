@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration with flakes and home-manager";
+  description = "Dendritic NixOS configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -7,28 +7,19 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:denful/import-tree";
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      ...
-    }@inputs:
-    {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.itah = import ./home.nix;
-          }
-        ];
-      };
+  outputs = inputs:
+    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+      systems = ["x86_64-linux"];
+
+      imports = [
+        # Declares the `flake.modules` option (the aspect registry).
+        inputs.flake-parts.flakeModules.modules
+        # Auto-import every `.nix` file under `./modules` as a flake module.
+        (inputs.import-tree ./modules)
+      ];
     };
 }

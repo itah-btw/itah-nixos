@@ -7,9 +7,7 @@
   pkgs,
   modulesPath,
   ...
-}:
-
-{
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -21,9 +19,9 @@
     "usb_storage"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot.initrd.kernelModules = [];
+  boot.kernelModules = ["kvm-intel"];
+  boot.extraModulePackages = [];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/3fecb90d-51d7-456d-b265-ea4dadef12a6";
@@ -40,7 +38,7 @@
   };
 
   swapDevices = [
-    { device = "/dev/disk/by-uuid/10246e06-e79b-4555-947b-ef7e3caf8ed8"; }
+    {device = "/dev/disk/by-uuid/10246e06-e79b-4555-947b-ef7e3caf8ed8";}
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
