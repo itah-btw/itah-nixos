@@ -4,32 +4,25 @@
 # dunstify with a fixed replace id so rapid/held keypresses update the single
 # live popup instead of spamming new ones.
 #
-# NOTE: sxhkd joins every line of a multi-line command with ';', so shell
-# backslash continuations are NOT possible here — keep each command on one
-# line, or the trailing '\' mangles the next statement.
+# NOTE: sxhkd silently truncates multi-line commands to the FIRST line (the
+# rest is dropped, no error). Every binding must be a single line, with
+# additional statements joined by ';' — do not use backslash continuations.
 {lib, ...}: {
   flake.modules.homeManager.sxhkd = {lib, ...}: {
     xdg.configFile."sxhkd/sxhkdrc".text = ''
       # Brightness
       XF86MonBrightnessUp
-          brightnessctl set +5%
-          b=$(( $(brightnessctl get) * 100 / $(brightnessctl max) ))
-          dunstify -a brightness -r 3001 -u low -h int:value:$b "Brightness"
+          brightnessctl set +5%; b=$(( $(brightnessctl get) * 100 / $(brightnessctl max) )); dunstify -a brightness -r 3001 -u low -h int:value:$b "Brightness"
       XF86MonBrightnessDown
-          brightnessctl set 5%-
-          b=$(( $(brightnessctl get) * 100 / $(brightnessctl max) ))
-          dunstify -a brightness -r 3001 -u low -h int:value:$b "Brightness"
+          brightnessctl set 5%-; b=$(( $(brightnessctl get) * 100 / $(brightnessctl max) )); dunstify -a brightness -r 3001 -u low -h int:value:$b "Brightness"
 
       # Volume
       XF86AudioRaiseVolume
-          pamixer --increase 5
-          dunstify -a volume -r 3000 -u low -h int:value:$(pamixer --get-volume) "Volume $(pamixer --get-volume)%"
+          pamixer --increase 5; dunstify -a volume -r 3000 -u low -h int:value:$(pamixer --get-volume) "Volume $(pamixer --get-volume)%"
       XF86AudioLowerVolume
-          pamixer --decrease 5
-          dunstify -a volume -r 3000 -u low -h int:value:$(pamixer --get-volume) "Volume $(pamixer --get-volume)%"
+          pamixer --decrease 5; dunstify -a volume -r 3000 -u low -h int:value:$(pamixer --get-volume) "Volume $(pamixer --get-volume)%"
       XF86AudioMute
-          pamixer --toggle-mute
-          if [ "$(pamixer --get-mute)" = "true" ]; then dunstify -a volume -r 3000 -u low "Volume" "Muted"; else dunstify -a volume -r 3000 -u low -h int:value:$(pamixer --get-volume) "Volume $(pamixer --get-volume)%"; fi
+          pamixer --toggle-mute; if [ "$(pamixer --get-mute)" = "true" ]; then dunstify -a volume -r 3000 -u low "Volume" "Muted"; else dunstify -a volume -r 3000 -u low -h int:value:$(pamixer --get-volume) "Volume $(pamixer --get-volume)%"; fi
 
       # Media
       XF86AudioPlay
@@ -55,8 +48,7 @@
 
       # Mic mute
       super+m
-          pamixer --default-source --toggle-mute
-          if [ "$(pamixer --default-source --get-mute)" = "true" ]; then dunstify -a mic -r 3002 -u low "Mic" "Muted"; else dunstify -a mic -r 3002 -u low "Mic" "Unmuted"; fi
+          pamixer --default-source --toggle-mute; if [ "$(pamixer --default-source --get-mute)" = "true" ]; then dunstify -a mic -r 3002 -u low "Mic" "Muted"; else dunstify -a mic -r 3002 -u low "Mic" "Unmuted"; fi
     '';
   };
 }
