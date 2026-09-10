@@ -32,6 +32,7 @@ in {
               st
               oxwm
               dunst
+              copy
               sxhkd
               yazi
               brave

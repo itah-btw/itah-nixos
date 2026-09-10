@@ -353,5 +353,6 @@ oxwm.key.chord({
 -- oxwm.autostart("dunst")
 -- oxwm.autostart("nm-applet")
 oxwm.autostart("feh --bg-fill /home/itah/Pictures/wallhaven-k82d91.png")
-oxwm.autostart("sxhkd")
-oxwm.autostart("clipmenud")
+  oxwm.autostart("sxhkd")
+  oxwm.autostart("clipmenud")
+  oxwm.autostart("copy-notify-daemon") -- copy OSD (see modules/home/apps/copy.nix)

@@ -116,6 +116,14 @@
           appname = "clipmenu"
           timeout = 3
           set_transient = true
+
+      # Generic copy OSD (copy-notify-daemon in copy.nix): fired by clipnotify
+      # when any app puts new text on the CLIPBOARD. Transient, stays off the
+      # history so frequent copying never clutters it.
+      [copy]
+          appname = "copy"
+          timeout = 3
+          set_transient = true
     '';
   };
 }
