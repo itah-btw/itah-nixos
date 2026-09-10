@@ -355,4 +355,3 @@ oxwm.key.chord({
 oxwm.autostart("feh --bg-fill /home/itah/Pictures/wallhaven-k82d91.png")
   oxwm.autostart("sxhkd")
   oxwm.autostart("clipmenud")
-  oxwm.autostart("copy-notify-daemon") -- copy OSD (see modules/home/apps/copy.nix)
