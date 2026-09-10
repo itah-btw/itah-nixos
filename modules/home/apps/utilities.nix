@@ -31,6 +31,8 @@
       pciutils
       usbutils
 
+      git # version control for /etc/nixos and projects
+
       # Files / devices
       localsend # LAN file sharing
       android-tools # adb/fastboot for phones

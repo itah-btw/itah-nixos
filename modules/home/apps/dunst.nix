@@ -2,7 +2,15 @@
 # monospace nerd font, progress bars, click-to-activate, and rules that keep
 # the nixos-upgrade systemd hooks (notify-itah) on screen long enough.
 {lib, ...}: {
-  flake.modules.homeManager.dunst = {lib, ...}: {
+  flake.modules.homeManager.dunst = {
+    lib,
+    pkgs,
+    ...
+  }: {
+    home.packages = [
+      pkgs.dunst # notification daemon (launch in .xinitrc; dunstify for alerts)
+    ];
+
     xdg.configFile."dunst/dunstrc".text = ''
       [global]
           monitor = 0
